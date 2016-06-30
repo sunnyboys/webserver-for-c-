@@ -3,8 +3,6 @@
 #include "../head/serverSocket.h"
 
 int main(){
-	Request *r = new Request();
-	r->print();
 	ServerSocket *ss = new ServerSocket(8000);
 	ss->socketBind();
 	ss->socketListen();
@@ -17,5 +15,7 @@ int main(){
 		ss->sendProto(connect_fd);
 		ss->closeConnected(connect_fd);
 	}
+	ss->closeSocket();
+	delete(ss);
 	return 0;
 }
