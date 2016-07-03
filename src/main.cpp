@@ -1,6 +1,7 @@
 #include<iostream>
 #include "../head/request.h"
 #include "../head/serverSocket.h"
+#include "../head/response.h"
 
 int main(){
 	ServerSocket *ss = new ServerSocket(8000);
@@ -9,11 +10,16 @@ int main(){
 	while(true){
 		std::cout<<"===========accept======"<<std::endl;
 		int connect_fd = ss->socketAccept();
-		ss->recvProto(connect_fd);
-		//std::cout<<"recv content:"<< *content<<std::endl;
-		//char str[6] = "nihao\n";
-		ss->sendProto(connect_fd);
+		std::string str = ss->recvProto(connect_fd);
+		std::cout<<"main recv str:"<< str <<std::endl;
+		Request r;
+		r.setRequestStr(str);
+		//ss->sendProto(connect_fd);
+		Response res;
+		res.sendProto(ss, connect_fd, r.getUri());
+		std::cout<<"======send end======="<<std::endl;
 		ss->closeConnected(connect_fd);
+		std::cout<<"=======close connected"<<std::endl;
 	}
 	ss->closeSocket();
 	delete(ss);

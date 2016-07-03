@@ -39,20 +39,21 @@ int ServerSocket::socketAccept()
 	return connect_fd;
 }
 
-void ServerSocket::recvProto(int connect_fd)
+std::string ServerSocket::recvProto(int connect_fd)
 {
 	char buff[MAX_BUFF];
 	int n = recv(connect_fd, buff, MAX_BUFF, 0);
-	printf("recv msg fd:%d, content:%s", connect_fd, buff);
+	return buff;
 }
 
-void ServerSocket::sendProto(int connect_fd)
+void ServerSocket::sendProto(int connect_fd, char* buff, int len)
 {
-	if(send(connect_fd, "hello, you are connected\n", 26, 0) == -1){
+	if(send(connect_fd, buff, len, 0) == -1){
 		perror("send error");
 		close(connect_fd);
 		exit(0);
 	}
+	printf("send=======content:%s", buff);
 }
 
 void ServerSocket::closeConnected(int connect_fd)

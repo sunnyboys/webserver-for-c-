@@ -1,6 +1,7 @@
 #ifndef SERVERSOCKET_H
 #define SERVERSOCKET_H
 #include<stdio.h>
+#include<iostream>
 #include<sys/types.h>
 #include<sys/socket.h>
 #include<netinet/in.h>
@@ -22,8 +23,8 @@ class ServerSocket
 		void socketBind();
 		void socketListen();
 		int socketAccept();
-		void recvProto(int connect_fd);
-		void sendProto(int connect_fd);
+		std::string recvProto(int connect_fd);
+		void sendProto(int connect_fd, char* buff, int len);
 		void closeConnected(int connect_fd);
 		void closeSocket();
 		
