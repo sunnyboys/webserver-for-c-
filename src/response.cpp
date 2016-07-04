@@ -17,16 +17,15 @@ void Response::sendProto(ServerSocket* ss, int connect_fd, const std::string uri
 		struct stat st;
 		stat(fname.c_str(), &st);
 		fsize = st.st_size;
-		printf("+++++++++fileSize:%d\n", fsize);
 		sendHeader(ss, connect_fd, 200, fsize);
 		bzero(buffer, BUFFER_SIZE);
 		int fileBlockLen = 0;
-		while((fileBlockLen = fread(buffer, sizeof(char), BUFFER_SIZE, fp))		> 0){
-			printf("file_block_length = %d\n", fileBlockLen);
+		while((fileBlockLen = fread(buffer, sizeof(char), BUFFER_SIZE, fp))	> 0){
 			ss->sendProto(connect_fd, buffer, fileBlockLen);
-	}
-	fclose(fp);
-	fp = NULL;
+			bzero(buffer, BUFFER_SIZE);
+		}
+		fclose(fp);
+		fp = NULL;
 
 }
 }
@@ -48,7 +47,6 @@ void Response::sendHeader(ServerSocket* ss, int connect_fd, int code, int fsize)
 	headStr += fsizeStr;
 	headStr += "\n\n";
 	char buffer[BUFFER_SIZE];
-	strncpy(buffer, headStr.c_str(), sizeof(buffer));
-	ss->sendProto(connect_fd,buffer, sizeof(buffer));
-	//std::cout<<"-----send head:"<<headStr<<std::endl;
+	strncpy(buffer, headStr.c_str(), headStr.size());
+	ss->sendProto(connect_fd,buffer, headStr.size());
 }

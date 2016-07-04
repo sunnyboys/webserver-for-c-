@@ -14,7 +14,6 @@ int main(){
 		std::cout<<"main recv str:"<< str <<std::endl;
 		Request r;
 		r.setRequestStr(str);
-		//ss->sendProto(connect_fd);
 		Response res;
 		res.sendProto(ss, connect_fd, r.getUri());
 		std::cout<<"======send end======="<<std::endl;

@@ -20,3 +20,8 @@ const std::string Request::getUri()
 {
 	return _uri;
 }
+
+std::string Request::getName()
+{
+	return name;
+}
